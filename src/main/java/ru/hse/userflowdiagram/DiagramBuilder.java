@@ -52,8 +52,6 @@ public class DiagramBuilder {
             strBuildResult.append(getTables());
             strBuildResult.append(getTextarea());
 
-
-
             writer.write(strBuildResult.toString());
         } catch (IOException e) {
             e.printStackTrace(System.err);
@@ -184,8 +182,6 @@ public class DiagramBuilder {
                 default:
                     return getElements(tag, title);
             }
-
-
             strBuilder.append(String.format("%s%s * %s -- Acrions: ", tab, "\t", type)).append(actions).append("\n");
         }
         if (elements.isEmpty()) {
@@ -235,7 +231,5 @@ public class DiagramBuilder {
         }
         return strBuilder.toString();
     }
-
-
 
 }
