@@ -10,3 +10,6 @@ out/
 
 ### MacOS ###
 .DS_Store
+
+### Output Directory ###
+src/test/java/ru/hse/userflowdiagram/output/
