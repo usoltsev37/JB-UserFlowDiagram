@@ -13,3 +13,6 @@ out/
 
 ### Output Directory ###
 src/test/java/ru/hse/userflowdiagram/output/
+
+### HTML Resources Directory ###
+html_examples/
