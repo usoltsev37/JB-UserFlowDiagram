@@ -13,7 +13,16 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
-    implementation 'org.jsoup:jsoup:1.14.2'
+    implementation 'org.jsoup:jsoup:1.14.3'
+    implementation 'com.codeborne:selenide:6.1.1'
+    testImplementation 'com.codeborne:selenide:6.1.1'
+
+//    graphvgiz-java for drawing diagram
+    implementation 'com.eclipsesource.j2v8:j2v8_macosx_x86_64:4.6.0'
+    implementation group: 'guru.nidi', name: 'graphviz-java', version: '0.18.1'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+    compile group: 'org.slf4j', name: 'jul-to-slf4j', version: '1.7.25'
 }
 
 test {

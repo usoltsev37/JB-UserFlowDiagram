@@ -119,7 +119,7 @@ public class DiagramBuilder {
     private String getInputs() {
         String tag = "input";
         String title = "Inputs";
-        Elements elements = doc.select(tag);
+        Elements elements = doc.getElementsByTag(tag);
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append(String.format("%s %s (%d):\n", tab, title, elements.size()));
         for (Element element : elements) {
@@ -187,6 +187,9 @@ public class DiagramBuilder {
         if (elements.isEmpty()) {
             strBuilder.append(String.format("%s%s No %s on the page\n", tab, "\t", title));
         }
+
+        strBuilder.append(doc.html());
+
         return strBuilder.toString();
     }
 
