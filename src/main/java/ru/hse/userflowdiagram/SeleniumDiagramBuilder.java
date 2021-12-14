@@ -2,6 +2,7 @@ package ru.hse.userflowdiagram;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import guru.nidi.graphviz.model.MutableGraph;
@@ -9,10 +10,10 @@ import guru.nidi.graphviz.model.MutableNode;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
+import static com.codeborne.selenide.Condition.attribute;
+import static com.codeborne.selenide.Selenide.$;
 import static guru.nidi.graphviz.model.Factory.*;
 
 public class SeleniumDiagramBuilder {
@@ -20,6 +21,9 @@ public class SeleniumDiagramBuilder {
     private final String fileName;
     private final MutableGraph graph = mutGraph("UsefFlowDiagram");
     private final MutableNode root;
+
+    private final Map<MutableNode, String> map = new HashMap<>();
+    private final Set<String> setVisited = new HashSet<>();
 
     public SeleniumDiagramBuilder(String URL_STR,  String fileName) {
         this.URL_STR = URL_STR;
@@ -35,9 +39,29 @@ public class SeleniumDiagramBuilder {
     }
 
     private void dfs(MutableNode parent, String curr_page) {
+        setVisited.add(curr_page);
         Selenide.open(curr_page);
-        parent.addLink(getInputs());
-        parent.addLink(getButtons());
+
+        List<MutableNode> children = new ArrayList<>();
+
+        List<MutableNode> inputs = getInputs();
+        List<MutableNode> buttons = getButtons();
+        List<MutableNode> links = getLinks();
+        children.addAll(inputs);
+        children.addAll(buttons);
+        children.addAll(links);
+
+        parent.addLink(inputs);
+        parent.addLink(buttons);
+        parent.addLink(links);
+
+
+//        for (var child : children) {
+//            String link = map.get(child);
+//            if (!setVisited.contains(link)) {
+//                dfs(child, link);
+//            }
+//        }
     }
 
     private MutableNode getTitle() {
@@ -114,17 +138,11 @@ public class SeleniumDiagramBuilder {
     private List<MutableNode> getButtons() {
         ElementsCollection buttons = Selenide.$$("button");
         List<MutableNode> result = new ArrayList<>(buttons.size());
-        for (var butt : buttons) {
+        for (SelenideElement butt : buttons) {
             StringBuilder nodeValueBuilder = new StringBuilder();
             System.out.println(butt);
 
-            String name = butt.getAttribute("aria-label");
-            if (!isCorrectStr(name)) {
-                name = butt.getAttribute("label");
-                if (!isCorrectStr(name)) {
-                    name = "";
-                }
-            }
+            String name = getButtonName(butt);
 
             String id = butt.getAttribute("id");
             if (!isCorrectStr(id)) {
@@ -139,9 +157,38 @@ public class SeleniumDiagramBuilder {
                 type = "";
             }
             nodeValueBuilder.append(String.format("Button %s\n [id: %s, type %s]\n", name, id, type));
-            result.add(mutNode(nodeValueBuilder.toString()));
+            MutableNode node = mutNode(nodeValueBuilder.toString());
+            result.add(node);
         }
         return result;
+    }
+
+    private List<MutableNode> getLinks() {
+        ElementsCollection links = Selenide.$$("a").filterBy(attribute("href"));
+
+        List<MutableNode> result = new ArrayList<>(links.size());
+        for (SelenideElement linkElem : links) {
+            StringBuilder nodeValueBuilder = new StringBuilder();
+            System.out.println(linkElem);
+            nodeValueBuilder.append("URL: ").append(linkElem.attr("href"));
+            MutableNode node = mutNode(nodeValueBuilder.toString());
+            result.add(node);
+        }
+        return result;
+    }
+
+    private String getButtonName(SelenideElement butt) {
+        String name = butt.getText();
+        if (!isCorrectStr(name)) {
+            name = butt.getAttribute("aria-label");
+            if (!isCorrectStr(name)) {
+                name = butt.getAttribute("label");
+                if (!isCorrectStr(name)) {
+                    name = "";
+                }
+            }
+        }
+        return name;
     }
 
     private boolean isCorrectStr(String s) {

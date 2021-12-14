@@ -1,5 +1,7 @@
 package ru.hse.userflowdiagram;
 
+import com.codeborne.selenide.Configuration;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +37,8 @@ public class TestMain {
     ));
 
     public static void main(String[] args) throws IOException {
-        for (var site : Arrays.asList(new SiteData(OZON_URL, OZON_FILE))) {
+        Configuration.headless = true;
+        for (var site : Arrays.asList(new SiteData(LAMODA_URL, LAMODA_FILE))) {
             var builder = new SeleniumDiagramBuilder(site.url, site.file);
             builder.build();
         }
