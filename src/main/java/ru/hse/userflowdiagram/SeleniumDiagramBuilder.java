@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.*;
 
 import static com.codeborne.selenide.Condition.attribute;
-import static com.codeborne.selenide.Selenide.$;
 import static guru.nidi.graphviz.model.Factory.*;
 
 public class SeleniumDiagramBuilder {
@@ -46,14 +45,14 @@ public class SeleniumDiagramBuilder {
 
         List<MutableNode> inputs = getInputs();
         List<MutableNode> buttons = getButtons();
-        List<MutableNode> links = getLinks();
+//        List<MutableNode> links = getLinks();
         children.addAll(inputs);
         children.addAll(buttons);
-        children.addAll(links);
+//        children.addAll(links);
 
         parent.addLink(inputs);
         parent.addLink(buttons);
-        parent.addLink(links);
+//        parent.addLink(links);
 
 
 //        for (var child : children) {
@@ -138,6 +137,8 @@ public class SeleniumDiagramBuilder {
     private List<MutableNode> getButtons() {
         ElementsCollection buttons = Selenide.$$("button");
         List<MutableNode> result = new ArrayList<>(buttons.size());
+        String click = "Click";
+        MutableNode nodeClick = mutNode(click);
         for (SelenideElement butt : buttons) {
             StringBuilder nodeValueBuilder = new StringBuilder();
             System.out.println(butt);
@@ -158,6 +159,7 @@ public class SeleniumDiagramBuilder {
             }
             nodeValueBuilder.append(String.format("Button %s\n [id: %s, type %s]\n", name, id, type));
             MutableNode node = mutNode(nodeValueBuilder.toString());
+            node.addLink(nodeClick.copy());
             result.add(node);
         }
         return result;
