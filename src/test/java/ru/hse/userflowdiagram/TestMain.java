@@ -39,7 +39,7 @@ public class TestMain {
     public static void main(String[] args) throws IOException {
         Configuration.headless = true;
         for (var site : Arrays.asList(new SiteData(LAMODA_URL, LAMODA_FILE))) {
-            var builder = new SeleniumDiagramBuilder(site.url, site.file);
+            var builder = new DiagramBuilder(site.url, site.file);
             builder.build();
         }
     }
