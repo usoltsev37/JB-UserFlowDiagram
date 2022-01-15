@@ -1,6 +1,7 @@
 package ru.hse.userflowdiagram;
 
 import com.codeborne.selenide.Configuration;
+import guru.nidi.graphviz.engine.Format;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class TestMain {
         Configuration.headless = true;
         for (var site : Arrays.asList(new SiteData(LAMODA_URL, LAMODA_FILE))) {
             var builder = new DiagramBuilder(site.url, site.file);
-            builder.build();
+            builder.build(2, Format.PNG);
         }
     }
 }

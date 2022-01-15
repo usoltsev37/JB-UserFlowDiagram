@@ -5,6 +5,8 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import guru.nidi.graphviz.model.MutableNode;
 import ru.hse.userflowdiagram.Constants;
+import ru.hse.userflowdiagram.Forest;
+import ru.hse.userflowdiagram.NodeLink;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +16,18 @@ import static guru.nidi.graphviz.model.Factory.mutNode;
 
 public class Link implements Attribute{
     @Override
-    public List<MutableNode> get() {
+    public Forest get() {
         ElementsCollection links = Selenide.$$(Constants.link).filterBy(attribute(Constants.href));
-        List<MutableNode> result = new ArrayList<>(links.size());
+        List<MutableNode> roots = new ArrayList<>(links.size());
+        List<NodeLink> leavesURLs = new ArrayList<>();
         for (SelenideElement linkElem : links) {
             StringBuilder nodeValueBuilder = new StringBuilder();
-            nodeValueBuilder.append("URL: ").append(linkElem.attr(Constants.href));
+            String url = linkElem.attr(Constants.href);
+            nodeValueBuilder.append("URL: ").append(url);
             MutableNode node = mutNode(nodeValueBuilder.toString());
-            result.add(node);
+            roots.add(node);
+            leavesURLs.add(new NodeLink(node, url));
         }
-        return result;
+        return new Forest(roots,leavesURLs);
     }
 }

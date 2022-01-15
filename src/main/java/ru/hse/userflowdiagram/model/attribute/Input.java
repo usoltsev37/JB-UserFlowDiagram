@@ -4,6 +4,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import guru.nidi.graphviz.model.MutableNode;
 import ru.hse.userflowdiagram.Constants;
+import ru.hse.userflowdiagram.Forest;
 import ru.hse.userflowdiagram.Utils;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import static guru.nidi.graphviz.model.Factory.mutNode;
 
 public class Input implements Attribute {
     @Override
-    public List<MutableNode> get() {
+    public Forest get() {
         ElementsCollection inputs = Selenide.$$(Constants.input);
         List<MutableNode> result = new ArrayList<>(inputs.size());
         for (var inp : inputs) {
@@ -75,6 +76,6 @@ public class Input implements Attribute {
             }
             result.add(mutNode(nodeValueBuilder.toString()));
         }
-        return result;
+        return new Forest(result, new ArrayList<>());
     }
 }
