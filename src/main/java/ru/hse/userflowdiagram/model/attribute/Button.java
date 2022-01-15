@@ -1,12 +1,12 @@
-package ru.hse.userflowdiagram.model;
+package ru.hse.userflowdiagram.model.attribute;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import guru.nidi.graphviz.model.MutableNode;
-import ru.hse.userflowdiagram.Constants;
-import ru.hse.userflowdiagram.Forest;
-import ru.hse.userflowdiagram.Utils;
+import ru.hse.userflowdiagram.utils.Constants;
+import ru.hse.userflowdiagram.model.forest.ForestInfo;
+import ru.hse.userflowdiagram.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import static guru.nidi.graphviz.model.Factory.mutNode;
 
 public class Button implements Attribute {
     @Override
-    public Forest get() {
+    public ForestInfo get() {
         ElementsCollection buttons = Selenide.$$(Constants.button);
         List<MutableNode> result = new ArrayList<>(buttons.size());
         for (SelenideElement butt : buttons) {
@@ -38,7 +38,7 @@ public class Button implements Attribute {
             MutableNode node = mutNode(nodeValueBuilder.toString());
             result.add(node);
         }
-        return new Forest(result, new ArrayList<>());
+        return new ForestInfo(result, new ArrayList<>());
     }
 
     private String getButtonName(SelenideElement butt) {

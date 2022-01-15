@@ -1,7 +1,7 @@
-package ru.hse.userflowdiagram.model;
+package ru.hse.userflowdiagram.model.attribute;
 
-import ru.hse.userflowdiagram.Forest;
+import ru.hse.userflowdiagram.model.forest.ForestInfo;
 
 public interface Attribute {
-    Forest get();
+    ForestInfo get();
 }

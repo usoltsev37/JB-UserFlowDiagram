@@ -1,4 +1,4 @@
-package ru.hse.userflowdiagram;
+package ru.hse.userflowdiagram.utils;
 
 public final class Constants {
     public static final String nav = "nav";
