@@ -1,14 +1,14 @@
 package ru.hse.userflowdiagram.model.forest;
 
-import guru.nidi.graphviz.model.MutableNode;
+import ru.hse.userflowdiagram.model.graph.WebVertex;
 
 import java.util.List;
 
 public class ForestInfo {
-    public List<MutableNode> roots;
+    public List<WebVertex> roots;
     public List<NodeURL> leavesURLs;
 
-    public ForestInfo(List<MutableNode> roots, List<NodeURL> leavesURLs) {
+    public ForestInfo(List<WebVertex> roots, List<NodeURL> leavesURLs) {
         this.roots = roots;
         this.leavesURLs = leavesURLs;
     }

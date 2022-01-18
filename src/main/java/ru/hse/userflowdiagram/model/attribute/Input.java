@@ -2,7 +2,7 @@ package ru.hse.userflowdiagram.model.attribute;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
-import guru.nidi.graphviz.model.MutableNode;
+import ru.hse.userflowdiagram.model.graph.WebVertex;
 import ru.hse.userflowdiagram.utils.Constants;
 import ru.hse.userflowdiagram.model.forest.ForestInfo;
 import ru.hse.userflowdiagram.utils.Utils;
@@ -11,19 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static guru.nidi.graphviz.model.Factory.mutNode;
-
 public class Input implements Attribute {
     @Override
     public ForestInfo get() {
         ElementsCollection inputs = Selenide.$$(Constants.input);
-        List<MutableNode> result = new ArrayList<>(inputs.size());
+        List<WebVertex> result = new ArrayList<>(inputs.size());
         for (var inp : inputs) {
             StringBuilder nodeValueBuilder = new StringBuilder();
             String type = inp.getAttribute(Constants.type);
             if (!Utils.isAttributeExists(type)) {
                 nodeValueBuilder.append(Constants.input).append("\n");
-                result.add(mutNode(nodeValueBuilder.toString()));
+                result.add(new WebVertex(nodeValueBuilder.toString()));
                 continue;
             }
             nodeValueBuilder.append(type).append(" ").append(Constants.input).append("\n");
@@ -74,7 +72,7 @@ public class Input implements Attribute {
                 default:
                     break;
             }
-            result.add(mutNode(nodeValueBuilder.toString()));
+            result.add(new WebVertex(nodeValueBuilder.toString()));
         }
         return new ForestInfo(result, new ArrayList<>());
     }
